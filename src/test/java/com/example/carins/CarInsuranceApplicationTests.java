@@ -1,5 +1,6 @@
 package com.example.carins;
 
+import com.example.carins.model.Claim;
 import com.example.carins.service.CarService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,16 @@ class CarInsuranceApplicationTests {
         assertTrue(service.isInsuranceValid(1L, LocalDate.parse("2025-06-01")));
         assertFalse(service.isInsuranceValid(2L, LocalDate.parse("2025-02-01")));
     }
+    @Test
+    void insuranceFormatValidationTest(){
+        assertFalse(service.isDataFormatValid("2025-23-55")); //testarea unui format invalid
+        assertTrue(service.isDataFormatValid("2025-09-12")); //testarea unui format valid
+    }
+
+    @Test
+    void carExistsTest(){
+        assertTrue(service.findCarById(1L) != null);
+        assertFalse(service.findCarById(5L) != null);
+    }
 }
+

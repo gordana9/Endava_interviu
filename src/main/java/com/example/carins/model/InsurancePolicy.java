@@ -1,11 +1,14 @@
 package com.example.carins.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "insurancepolicy")
-public class InsurancePolicy {
+public class
+InsurancePolicy {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -14,13 +17,17 @@ public class InsurancePolicy {
 
     private String provider;
     private LocalDate startDate;
+    @NotNull(message = "endDate is required") //make properties required
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate; // nullable == open-ended
+    @Column(nullable = false)                // NEW: prevents re-logging
+    private boolean expiredNoticeLogged = false;
 
     public InsurancePolicy() {}
     public InsurancePolicy(Car car, String provider, LocalDate startDate, LocalDate endDate) {
         this.car = car; this.provider = provider; this.startDate = startDate; this.endDate = endDate;
     }
-
+//getters and setters
     public Long getId() { return id; }
     public Car getCar() { return car; }
     public void setCar(Car car) { this.car = car; }
@@ -30,4 +37,7 @@ public class InsurancePolicy {
     public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+    public boolean isExpiredNoticeLogged() { return expiredNoticeLogged; }
+    public void setExpiredNoticeLogged(boolean logged) { this.expiredNoticeLogged = logged; }
+
 }
